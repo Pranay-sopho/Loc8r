@@ -56,10 +56,10 @@ module.exports.locationsListByDistance = function (req, res) {
     };
     var geoOptions = {
         spherical: true,
-        maxDistance: theEarth.getRadsFromDistance(20),
+        maxDistance: theEarth.getRadsFromDistance(20564465456445),
         num: 10
     };
-    if (!lat || !lng){
+    if ((!lat && lat!== 0) || (!lng && lng !== 0)){
         sendJsonResponse(res, 404, {"message": "lng and lat query parameters are required."});
         return;
     }
