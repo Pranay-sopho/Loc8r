@@ -60,8 +60,8 @@ module.exports.locationsListByDistance = function (req, res) {
         maxDistance: theEarth.getRadsFromDistance(maxDistance),
         num: 10
     };
-    if ((!lat && lat!== 0) || (!lng && lng !== 0)){
-        sendJsonResponse(res, 404, {"message": "lng and lat query parameters are required."});
+    if ((!lat && lat!== 0) || (!lng && lng !== 0) || !maxDistance){
+        sendJsonResponse(res, 404, {"message": "lng, lat and maxDistance query parameters are required."});
         return;
     }
     Loc.geoNear(point, geoOptions, function (err, results, stats) {
