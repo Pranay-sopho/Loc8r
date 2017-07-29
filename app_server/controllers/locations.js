@@ -94,8 +94,7 @@ var _showError = function (req, res, status) {
     });
 };
 
-/* GET Location Info page */
-module.exports.locationInfo = function(req, res){
+var getLocationInfo = function (req, res, callback) {
     var requestOptions, path;
     path = "/api/locations/" + req.params.locationid;
     requestOptions = {
@@ -110,17 +109,35 @@ module.exports.locationInfo = function(req, res){
                 lng: body.coords[0],
                 lat: body.coords[1]
             };
-            renderDetailPage(req, res, data);
+            callback(req, res, data);
         } else {
             _showError(req, res, response.statusCode);
         }
     });
 };
 
+/* GET Location Info page */
+module.exports.locationInfo = function(req, res){
+    getLocationInfo(req, res, function (req, res, responseData) {
+        renderDetailPage(req, res, responseData);
+    });
+};
+
+var renderReviewForm = function (req, res, locDetail) {
+    res.render('location-review-form', {
+        title: 'Review ' + locDetail.name + ' on Loc8r',
+        pageHeader: {title: 'Review ' + locDetail.name}
+    });
+};
+
 /* GET Add Review page */
 module.exports.addReview = function(req, res){
-    res.render('location-review-form', {
-        title: 'Review Starcups on Loc8r',
-        pageHeader: {title: 'Review Starcups'}
-    });
+    getLocationInfo(req, res, function (req, res, responseData) {
+        renderReviewForm(req, res, responseData);
+    })
+};
+
+/* Controller for posting data from add review page */
+module.exports.doAddReview = function (req, res) {
+
 };
